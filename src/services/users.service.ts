@@ -42,6 +42,8 @@ class UserService {
             return user;
         });
 
+        this.users = updateUserData;
+
         return updateUserData;
     }
 
@@ -50,6 +52,7 @@ class UserService {
         if (!findUser) throw new HttpException(409, "User doesn't exist");
 
         const deleteUserData: User[] = this.users.filter(user => user.id !== findUser.id);
+        this.users = deleteUserData;
         return deleteUserData;
     }
 }
