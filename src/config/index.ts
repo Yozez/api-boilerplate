@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import {dirname, resolve} from "path";
+import { dirname, resolve } from 'path';
 __dirname = resolve(dirname(''));
 
 config({ path: `${__dirname}/envs/.env.${process.env.NODE_ENV || 'development'}.local` });

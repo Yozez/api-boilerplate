@@ -5,56 +5,56 @@ import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
 
 class UserService {
-    public users = userModel;
+  public users = userModel;
 
-    public async findAllUser(): Promise<User[]> {
-        const users: User[] = this.users;
-        return users;
-    }
+  public async findAllUser(): Promise<User[]> {
+    const users: User[] = this.users;
+    return users;
+  }
 
-    public async findUserById(userId: number): Promise<User> {
-        const findUser: User = this.users.find(user => user.id === userId);
-        if (!findUser) throw new HttpException(409, "User doesn't exist");
+  public async findUserById(userId: number): Promise<User> {
+    const findUser: User = this.users.find(user => user.id === userId);
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-        return findUser;
-    }
+    return findUser;
+  }
 
-    public async createUser(userData: CreateUserDto): Promise<User> {
-        if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async createUser(userData: CreateUserDto): Promise<User> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-        const findUser: User = this.users.find(user => user.email === userData.email);
-        if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    const findUser: User = this.users.find(user => user.email === userData.email);
+    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
 
-        const createUserData: User = { id: this.users.length + 1, ...userData, password: userData.password };
-        this.users = [...this.users, createUserData];
+    const createUserData: User = { id: this.users.length + 1, ...userData, password: userData.password };
+    this.users = [...this.users, createUserData];
 
-        return createUserData;
-    }
+    return createUserData;
+  }
 
-    public async updateUser(userId: number, userData: CreateUserDto): Promise<User[]> {
-        if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async updateUser(userId: number, userData: CreateUserDto): Promise<User[]> {
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
-        const findUser: User = this.users.find(user => user.id === userId);
-        if (!findUser) throw new HttpException(409, "User doesn't exist");
+    const findUser: User = this.users.find(user => user.id === userId);
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-        const updateUserData: User[] = this.users.map((user: User) => {
-            if (user.id === findUser.id) user = { id: userId, ...userData, password: userData.password };
-            return user;
-        });
+    const updateUserData: User[] = this.users.map((user: User) => {
+      if (user.id === findUser.id) user = { id: userId, ...userData, password: userData.password };
+      return user;
+    });
 
-        this.users = updateUserData;
+    this.users = updateUserData;
 
-        return updateUserData;
-    }
+    return updateUserData;
+  }
 
-    public async deleteUser(userId: number): Promise<User[]> {
-        const findUser: User = this.users.find(user => user.id === userId);
-        if (!findUser) throw new HttpException(409, "User doesn't exist");
+  public async deleteUser(userId: number): Promise<User[]> {
+    const findUser: User = this.users.find(user => user.id === userId);
+    if (!findUser) throw new HttpException(409, "User doesn't exist");
 
-        const deleteUserData: User[] = this.users.filter(user => user.id !== findUser.id);
-        this.users = deleteUserData;
-        return deleteUserData;
-    }
+    const deleteUserData: User[] = this.users.filter(user => user.id !== findUser.id);
+    this.users = deleteUserData;
+    return deleteUserData;
+  }
 }
 
 export default UserService;
